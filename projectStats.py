@@ -28,12 +28,10 @@ def countProjectLines(directory):
     directories = list()
 
     for entry in directoryEntries:
-        #print(os.path.join(directory, entry))
         if os.path.isfile(os.path.join(directory, entry)):
             files.append(os.path.join(directory, entry))
         elif os.path.isdir(os.path.join(directory, entry)):
             if not entry in forbiddenFolders:
-                #print('Appending {0} to directories'.format(os.path.join(directory, entry)))
                 directories.append(os.path.join(directory, entry))
 
     for currentFile in files:
