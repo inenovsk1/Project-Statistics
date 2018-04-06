@@ -108,7 +108,7 @@ def collectProjectInOneFile(directory, extensions, forbiddenFolders, fileWriter)
 
 def main():
     if len(sys.argv) != 2:
-        print("Something went wrong..", file=sys.stderr)
+        print("Command line arguments mismatch..", file=sys.stderr)
         print("Usage: python[3] projectStats.py /root/path/to/project", file=sys.stderr)
         sys.exit(1)
 
@@ -121,7 +121,7 @@ def main():
     forbiddenFolders = configs['forbiddenFolders']
     
     directory = os.path.abspath(sys.argv[1])
-    print('\nPerforming stats for project at root -> {0}'.format(os.path.abspath(directory)))
+    print('\nPerforming stats for project at root -> {0}'.format(directory))
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n')
 
     numLines = countProjectLines(directory, extensions, forbiddenFolders)
