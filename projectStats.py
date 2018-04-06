@@ -1,14 +1,14 @@
 """
 A program that recursively iterates over all files of your project
-and gives you different statistics about the project. Currently the only
-supported feature is recursively counting the number of lines in a given
-root directory of a project.
+and gives you different statistics about the project.
+Work in progress..
 """
 
 
 import sys
 import os
 import shutil
+import json
 
 
 def setup():
@@ -25,16 +25,25 @@ def setup():
     os.chdir(resultsDirectory)
 
 
-def countProjectLines(directory, extensions):
-    """Recursively iterates through each directory and count the number
-    of lines of each file so that one can knows the amount of total lines
-    in a project.
+def loadConfigs():
+    """Opens, parses and stores the given configuration into a Python
+    dictionary.
+    """
+    configs = dict()
+
+    with open('Configurations.json') as f:
+        configs = json.load(f)
+        
+    return configs
+
+
+def countProjectLines(directory, extensions, forbiddenFolders):
+    """Recursively iterates through each directory/subdirectory of the project
+    and count the number of lines of each file so that one finds out the
+    amount of total lines in a project.
     """
     
     #print("\nCurrent directory -> {}".format(directory))
-    
-    # Files to be checked
-    forbiddenFolders = ['.', '..', '__pycache__', '.git', '.vscode']
     totalLines = 0
 
     directoryEntries = os.listdir(directory)
@@ -60,18 +69,16 @@ def countProjectLines(directory, extensions):
     #print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     
     for currentDirectory in directories:
-        totalLines += countProjectLines(currentDirectory, extensions)
+        totalLines += countProjectLines(currentDirectory, extensions, forbiddenFolders)
 
     return totalLines
     
 
-def collectProjectOneFile(directory, extensions, fileWriter):
-    """Recursively collects all files in a project and prints their content
-    into a separate file. This way one gets the whole project condensed into
-    one file!
+def collectProjectInOneFile(directory, extensions, forbiddenFolders, fileWriter):
+    """Recursively reads all files in a project and collects their content
+    into a single file. This way one gets the whole project condensed into
+    one file, fast and effortless!
     """
-
-    forbiddenFolders = ['.', '..', '__pycache__', '.git', '.vscode']
 
     directoryEntries = os.listdir(directory)
     files = list()
@@ -96,24 +103,29 @@ def collectProjectOneFile(directory, extensions, fileWriter):
 
     if directories:
         for currentDirectory in directories:
-            collectProjectOneFile(currentDirectory, extensions, fileWriter)
+            collectProjectInOneFile(currentDirectory, extensions, forbiddenFolders, fileWriter)
     
 
 def main():
     sys.setrecursionlimit(5000)
-    homeDirectory = os.getcwd()
+    
+    configs = loadConfigs()
     setup()
 
-    extensions = ['.cpp', '.py', '.h', '.html', '.css', '.js']
+    extensions = configs['extensions']
+    forbiddenFolders = configs['forbiddenFolders']
     
     directory = os.path.abspath(sys.argv[1])
-    print('Performing stats for project at root -> {0}'.format(os.path.abspath(directory)))
+    print('\nPerforming stats for project at root -> {0}'.format(os.path.abspath(directory)))
+    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n')
 
-    numLines = countProjectLines(directory, extensions)
-    print("Total number of lines in the project is {0}".format(numLines))
+    numLines = countProjectLines(directory, extensions, forbiddenFolders)
+    print('Total number of lines in the project -> {0}!'.format(numLines))
 
-    with open('Project.txt', 'w') as projectWriter:
-        collectProjectOneFile(directory, extensions, projectWriter)
+    with open('fullProject', 'w') as projectWriter:
+        collectProjectInOneFile(directory, extensions, forbiddenFolders, projectWriter)
+
+    print('All specified source files were collected into the file \'fullProject\' in the Stats folder!')
 
 
 if __name__ == '__main__':

@@ -1,12 +1,25 @@
 # Project-Statistics
 A Python program that gives you different statistics about your projects!
-Currently it only counts number of lines, but it has the potential to grow and gives
+Currently it only counts number of lines, but it has the potential to grow and to give
 much more statistics such as most used variable name, last modified date of files, etc..
 
-By default it counts C++, Python, CSS, Javascript and HTML source files. If your project
-is using any other languages you can go into the projectStats.py file and modify the extensions
-list (i.e. add the desired extensions). A nice touch would be to add the usage of configuration
-files where one can specify the different extensions and statistics desired! Work in progress..
+Use the Configurations.json file to add desired source files to be used for the statistics.
+For example if one only wants C++ source files to be counted in the statistic, then one can use
+the following setting:
+```json
+{
+    "extensions" : [
+        ".cpp",
+        ".h"
+    ]
+}
+```
+Currently only have settings for source files to be included in the statistics and directories
+to be excluded from the statistics which are meta data for the project but do not contain actual
+source files for the project!
+
+Do NOT rename the 'Configurations.json' file, because the Python program will look for a file with
+such a name and will crash if the file does not exist!!
 
 Usage
 -------
