@@ -107,6 +107,11 @@ def collectProjectInOneFile(directory, extensions, forbiddenFolders, fileWriter)
     
 
 def main():
+    if len(sys.argv) != 2:
+        print("Something went wrong..", file=sys.stderr)
+        print("Usage: python[3] projectStats.py /root/path/to/project", file=sys.stderr)
+        sys.exit(1)
+
     sys.setrecursionlimit(5000)
     
     configs = loadConfigs()
