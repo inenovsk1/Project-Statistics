@@ -122,7 +122,7 @@ def main():
     
     directory = os.path.abspath(sys.argv[1])
     print('\nPerforming stats for project at root -> {0}'.format(directory))
-    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n')
+    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n')
 
     numLines = countProjectLines(directory, extensions, forbiddenFolders)
     print('Total number of lines in the project -> {0}!'.format(numLines))

@@ -18,11 +18,15 @@ Currently only have settings for source files to be included in the statistics, 
 to be excluded from the statistics which are meta data for the project and do not contain actual
 source files for the project!
 
-Do NOT rename the 'Configurations.json' file, because the Python program will look for a file with
+Do NOT rename or move the 'Configurations.json' file, because the Python program will look for a file with
 such a name and will crash if the file does not exist!!
 
 Usage
 -------
+Clone the repository:
+```
+git clone https://github.com/inenovsk1/Project-Statistics.git
+```
 
 Simply run the python script and pass it the root directory of the project as the only
 command line argument!
